@@ -352,7 +352,14 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform var(--transition-slow);
+            opacity: 0;
+            transition: transform var(--transition-slow),
+                        opacity var(--transition-normal);
+        }
+
+        /* 图片加载完成后渐显 */
+        .card-image img.loaded {
+            opacity: 1;
         }
 
         .card:hover .card-image img {
@@ -1033,6 +1040,9 @@
             var clearBtn = document.querySelector('.search-clear');
             if (!searchInput) return;
 
+            // 初始化清除按钮状态
+            updateClearButton();
+
             // compositionstart：中文输入法开始组合输入
             searchInput.addEventListener('compositionstart', function () {
                 isComposing = true;
@@ -1321,25 +1331,23 @@
         }
 
         // ============================================================
-        // 图片懒加载渐入效果
+        // 图片加载渐入效果 —— CSS 初始 opacity:0，加载完成后添加 .loaded 渐显
         // ============================================================
         function initImageFadeIn() {
+            // 监听图片加载完成，添加 .loaded 触发 opacity 过渡
             document.addEventListener('load', function (e) {
                 var img = e.target;
-                if (img && img.tagName === 'IMG' && img.getAttribute('loading') === 'lazy') {
-                    img.style.opacity = '0';
-                    img.style.transition = 'opacity 0.3s ease';
-                    // 强制回流后触发过渡
-                    void img.offsetWidth;
-                    img.style.opacity = '1';
+                if (img && img.tagName === 'IMG' && img.closest('.card-image')) {
+                    img.classList.add('loaded');
                 }
             }, true);
 
+            // 监听图片加载失败，显示替代文本
             document.addEventListener('error', function (e) {
                 var img = e.target;
                 if (img && img.tagName === 'IMG') {
                     img.alt = '图片加载失败';
-                    img.style.opacity = '1';
+                    img.classList.add('loaded');
                 }
             }, true);
         }
