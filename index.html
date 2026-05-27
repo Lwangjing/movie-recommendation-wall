@@ -223,6 +223,63 @@
             color: var(--text-primary);
         }
 
+        /* 筛选按钮计数徽章 */
+        .filter-count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .filter-btn.active .filter-count {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        /* ============================================================
+           筛选结果统计栏（新增）
+           ============================================================ */
+        .filter-result-bar {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-xs) 0;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-family: var(--font-body);
+            animation: fadeInUp 300ms ease;
+        }
+
+        .filter-result-bar.visible {
+            display: flex;
+        }
+
+        .filter-result-count {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        .filter-result-reset {
+            background: none;
+            border: none;
+            color: var(--accent-secondary);
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            text-decoration: underline;
+            transition: color var(--transition-fast);
+        }
+
+        .filter-result-reset:hover {
+            color: var(--accent-primary);
+        }
+
         /* ============================================================
            搜索框（新增）
            ============================================================ */
@@ -381,6 +438,26 @@
             margin-bottom: var(--spacing-xs);
             text-transform: uppercase;
             letter-spacing: 0.05em;
+        }
+
+        /* 子类型标签（新增） */
+        .card-genres {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .card-genre-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: rgba(233, 69, 96, 0.15);
+            color: var(--accent-secondary);
+            font-size: 0.7rem;
+            font-weight: 400;
+            border-radius: 4px;
+            border: 1px solid rgba(233, 69, 96, 0.25);
+            letter-spacing: 0.03em;
         }
 
         .card-title {
@@ -804,10 +881,10 @@
         <!-- 筛选工具栏 —— 分类筛选按钮 + 搜索框 -->
         <div class="filter-toolbar">
             <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">全部</button>
-                <button class="filter-btn" data-filter="anime-movie">动画电影</button>
-                <button class="filter-btn" data-filter="sci-fi">科幻电影</button>
-                <button class="filter-btn" data-filter="anime">动漫</button>
+                <button class="filter-btn active" data-filter="all">全部<span class="filter-count">6</span></button>
+                <button class="filter-btn" data-filter="anime-movie">动画电影<span class="filter-count">2</span></button>
+                <button class="filter-btn" data-filter="sci-fi">科幻电影<span class="filter-count">2</span></button>
+                <button class="filter-btn" data-filter="anime">动漫剧集<span class="filter-count">2</span></button>
             </div>
             <div class="search-box">
                 <span class="search-icon">&#128269;</span>
@@ -819,6 +896,12 @@
                 >
                 <button class="search-clear" aria-label="清除搜索">&#10005;</button>
             </div>
+        </div>
+
+        <!-- 筛选结果统计栏（新增） -->
+        <div class="filter-result-bar">
+            <span>当前筛选结果：<span class="filter-result-count">6</span> 部作品</span>
+            <button class="filter-result-reset">清除筛选</button>
         </div>
 
         <!-- 推荐区域 —— 卡片由 JS 动态渲染 -->
@@ -857,6 +940,7 @@
                 title: '千与千寻',
                 tag: '动画电影',
                 category: 'anime-movie',
+                genres: ['奇幻', '冒险', '成长'],
                 meta: '宫崎骏 / 日本 / 奇幻',
                 description: '荣获奥斯卡最佳动画长片奖，讲述了千寻在神灵世界的冒险故事，关于成长、勇气和自我认同的永恒寓言。',
                 rating: '9.4/10',
@@ -867,6 +951,7 @@
                 title: '你的名字',
                 tag: '动画电影',
                 category: 'anime-movie',
+                genres: ['爱情', '奇幻', '青春'],
                 meta: '新海诚 / 日本 / 爱情',
                 description: '跨越时空的灵魂互换，编织出一段既浪漫又令人心碎的故事，视觉效果美得令人窒息。',
                 rating: '9.2/10',
@@ -877,6 +962,7 @@
                 title: '盗梦空间',
                 tag: '科幻电影',
                 category: 'sci-fi',
+                genres: ['悬疑', '动作', '烧脑'],
                 meta: '诺兰 / 美国 / 悬疑',
                 description: '一场游走于梦境与现实之间的视觉盛宴，多层梦境的精妙设定让人深思，每一遍观看都有新发现。',
                 rating: '9.3/10',
@@ -885,8 +971,9 @@
             {
                 id: 'demon-slayer',
                 title: '鬼灭之刃',
-                tag: '动漫',
+                tag: '动漫剧集',
                 category: 'anime',
+                genres: ['热血', '战斗', '奇幻'],
                 meta: '吾峠呼世晴 / 日本 / 热血',
                 description: '现象级动漫作品，炭治郎的复仇之路，配合史诗级的"火之神神乐"战斗场景，重新定义战斗动画标准。',
                 rating: '9.1/10',
@@ -897,6 +984,7 @@
                 title: '星际穿越',
                 tag: '科幻电影',
                 category: 'sci-fi',
+                genres: ['冒险', '情感', '硬科幻'],
                 meta: '诺兰 / 美国 / 冒险',
                 description: '探索宇宙奥秘与人类情感的史诗巨作，爱与时间的主题在星际间回荡，科学与情感的完美融合。',
                 rating: '9.4/10',
@@ -905,8 +993,9 @@
             {
                 id: 'attack-on-titan',
                 title: '进击的巨人',
-                tag: '动漫',
+                tag: '动漫剧集',
                 category: 'anime',
+                genres: ['悬疑', '战斗', '黑暗'],
                 meta: '諫山創 / 日本 / 悬疑',
                 description: '从绝望中寻找希望的热血巨作，层层反转的剧情让人欲罢不能，对人性、自由的深刻探讨。',
                 rating: '9.3/10',
@@ -930,6 +1019,16 @@
             var grid = document.querySelector('.card-grid');
             // 使用数据映射生成卡片 HTML
             grid.innerHTML = movies.map(function (movie) {
+                // 生成子类型标签 HTML
+                var genresHtml = '';
+                if (movie.genres && movie.genres.length > 0) {
+                    genresHtml = '<div class="card-genres">'
+                        + movie.genres.map(function (g) {
+                            return '<span class="card-genre-tag">' + g + '</span>';
+                        }).join('')
+                        + '</div>';
+                }
+
                 return (
                     '<article class="card" data-id="' + movie.id + '" data-category="' + movie.category + '">'
                     + '<div class="card-image">'
@@ -937,6 +1036,7 @@
                     + '</div>'
                     + '<div class="card-content">'
                     + '<span class="card-tag">' + movie.tag + '</span>'
+                    + genresHtml
                     + '<h3 class="card-title">' + movie.title + '</h3>'
                     + '<p class="card-meta">' + movie.meta + '</p>'
                     + '<p class="card-description">' + movie.description + '</p>'
@@ -988,6 +1088,8 @@
             var keyword = searchInput ? searchInput.value.trim().toLowerCase() : '';
             var cards = document.querySelectorAll('.card');
             var emptyState = document.querySelector('.empty-state');
+            var resultBar = document.querySelector('.filter-result-bar');
+            var resultCount = document.querySelector('.filter-result-count');
             var visibleCount = 0;
 
             cards.forEach(function (card) {
@@ -1008,12 +1110,127 @@
                 }
             });
 
+            // 更新结果统计栏
+            if (resultCount) {
+                resultCount.textContent = visibleCount;
+            }
+            if (resultBar) {
+                // 只在非"全部+无搜索"时显示统计栏
+                if (currentFilter !== 'all' || keyword !== '') {
+                    resultBar.classList.add('visible');
+                } else {
+                    resultBar.classList.remove('visible');
+                }
+            }
+
             // 空状态显示控制
             if (visibleCount === 0) {
                 emptyState.classList.add('visible');
             } else {
                 emptyState.classList.remove('visible');
             }
+
+            // URL hash 同步
+            syncHash();
+        }
+
+        // ============================================================
+        // URL hash 同步 —— 筛选状态反映到 URL
+        // ============================================================
+        function syncHash() {
+            var searchInput = document.querySelector('.search-input');
+            var keyword = searchInput ? searchInput.value.trim() : '';
+            var hash = '';
+            if (currentFilter !== 'all') {
+                hash = currentFilter;
+            }
+            if (keyword !== '') {
+                hash += (hash ? '&' : '') + 'q=' + encodeURIComponent(keyword);
+            }
+            // 使用 replaceState 避免产生过多历史记录
+            if (hash) {
+                history.replaceState(null, '', '#' + hash);
+            } else {
+                history.replaceState(null, '', window.location.pathname);
+            }
+        }
+
+        // ============================================================
+        // 从 URL hash 恢复筛选状态
+        // ============================================================
+        function initHashRouting() {
+            var hash = window.location.hash.replace('#', '');
+            if (!hash) return;
+
+            var parts = hash.split('&');
+            var filterFromHash = null;
+            var queryFromHash = null;
+
+            parts.forEach(function (part) {
+                if (part.indexOf('q=') === 0) {
+                    queryFromHash = decodeURIComponent(part.slice(2));
+                } else if (part) {
+                    filterFromHash = part;
+                }
+            });
+
+            // 验证筛选值是否有效
+            var validFilters = ['all', 'anime-movie', 'sci-fi', 'anime'];
+            if (filterFromHash && validFilters.indexOf(filterFromHash) !== -1 && filterFromHash !== 'all') {
+                currentFilter = filterFromHash;
+                var filterBtns = document.querySelectorAll('.filter-btn');
+                filterBtns.forEach(function (btn) {
+                    var btnFilter = btn.getAttribute('data-filter');
+                    if (btnFilter === filterFromHash) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            // 恢复搜索关键词
+            if (queryFromHash) {
+                var searchInput = document.querySelector('.search-input');
+                if (searchInput) {
+                    searchInput.value = queryFromHash;
+                    updateClearButton();
+                }
+            }
+
+            // 应用筛选
+            applyFilterAndSearch();
+        }
+
+        // ============================================================
+        // 筛选结果栏"清除筛选"按钮
+        // ============================================================
+        function initFilterResultReset() {
+            var resetBtn = document.querySelector('.filter-result-reset');
+            if (!resetBtn) return;
+
+            resetBtn.addEventListener('click', function () {
+                // 切换为"全部"
+                currentFilter = 'all';
+                var filterBtns = document.querySelectorAll('.filter-btn');
+                filterBtns.forEach(function (btn) {
+                    btn.classList.remove('active');
+                    if (btn.getAttribute('data-filter') === 'all') {
+                        btn.classList.add('active');
+                    }
+                });
+
+                // 清空搜索
+                var searchInput = document.querySelector('.search-input');
+                if (searchInput) {
+                    searchInput.value = '';
+                    updateClearButton();
+                }
+
+                // 立即应用
+                if (searchTimer) clearTimeout(searchTimer);
+                applyFilterAndSearch();
+            });
         }
 
         // ============================================================
@@ -1368,16 +1585,25 @@
             // 4. 搜索框
             initSearchInput();
 
-            // 5. 事件委托
+            // 5. 筛选结果栏重置按钮
+            initFilterResultReset();
+
+            // 6. 事件委托
             initEventDelegation();
 
-            // 6. 图片淡入
+            // 7. 图片淡入
             initImageFadeIn();
+
+            // 8. URL hash 路由恢复
+            initHashRouting();
 
             console.log('电影/动漫推荐墙已加载完成');
         }
 
-        // DOMContentLoaded 后执行
+        // 监听浏览器 hash 变化（手动修改 URL 或前进后退）
+        window.addEventListener('hashchange', function () {
+            initHashRouting();
+        });
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
